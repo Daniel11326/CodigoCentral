@@ -2,10 +2,21 @@ package Tienda;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.StringWriter;
 import java.sql.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class TiendaInformatica {
     // Datos de conexión a la base de datos
@@ -115,7 +126,7 @@ public class TiendaInformatica {
         clientesButton.setFont(new Font("Arial", Font.PLAIN, 20));
         pedidosButton.setFont(new Font("Arial", Font.PLAIN, 20));
         ventasButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        logoutButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        logoutButton.setFont(new Font("Arial", Font.PLAIN, 20));
 
         mainPanel.add(productosButton);
         mainPanel.add(proveedoresButton);
@@ -455,10 +466,12 @@ public class TiendaInformatica {
         JButton modifyButton = new JButton("Modificar Producto");
         JButton deleteButton = new JButton("Borrar Producto");
         JButton backButton = new JButton("Atrás");
+        JButton exportButton = new JButton("Exportar a XML");
 
         buttonPanel.add(addButton);
         buttonPanel.add(modifyButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(exportButton);
         buttonPanel.add(backButton);
         productosPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -498,6 +511,13 @@ public class TiendaInformatica {
                 } else {
                     JOptionPane.showMessageDialog(productosPanel, "Seleccione un producto para borrar");
                 }
+            }
+        });
+
+        exportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportToXML(tableModel);
             }
         });
 
@@ -712,6 +732,57 @@ public class TiendaInformatica {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    private static void exportToXML(DefaultTableModel tableModel) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.newDocument();
+
+            Element root = doc.createElement("Productos");
+            doc.appendChild(root);
+
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                Element producto = doc.createElement("Producto");
+
+                Element id = doc.createElement("ID");
+                id.appendChild(doc.createTextNode(tableModel.getValueAt(i, 0).toString()));
+                producto.appendChild(id);
+
+                Element nombre = doc.createElement("Nombre");
+                nombre.appendChild(doc.createTextNode(tableModel.getValueAt(i, 1).toString()));
+                producto.appendChild(nombre);
+
+                Element stock = doc.createElement("Stock");
+                stock.appendChild(doc.createTextNode(tableModel.getValueAt(i, 2).toString()));
+                producto.appendChild(stock);
+
+                Element categoria = doc.createElement("Categoría");
+                categoria.appendChild(doc.createTextNode(tableModel.getValueAt(i, 3).toString()));
+                producto.appendChild(categoria);
+
+                Element precio = doc.createElement("Precio");
+                precio.appendChild(doc.createTextNode(tableModel.getValueAt(i, 4).toString()));
+                producto.appendChild(precio);
+
+                root.appendChild(producto);
+            }
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            transformer.transform(source, result);
+
+            String xmlString = writer.getBuffer().toString();
+            JOptionPane.showMessageDialog(null, xmlString, "Exported XML", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ParserConfigurationException | javax.xml.transform.TransformerException e) {
+            e.printStackTrace();
         }
     }
 
