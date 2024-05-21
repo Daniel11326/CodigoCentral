@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Productos>
+  <Producto id_producto="1">
+    <Nombre>raton logitec</Nombre>
+    <Precio>25</Precio>
+    <Stock>9</Stock>
+  </Producto>
+  <Producto id_producto="2">
+    <Nombre>usb kingston</Nombre>
+    <Precio>14</Precio>
+    <Stock>8</Stock>
+  </Producto>
+  <Producto id_producto="3">
+    <Nombre>memoria ram</Nombre>
+    <Precio>56</Precio>
+    <Stock>12</Stock>
+  </Producto>
+  <Producto id_producto="4">
+    <Nombre>memoria rom</Nombre>
+    <Precio>32</Precio>
+    <Stock>9</Stock>
+  </Producto>
+  <Producto id_producto="5">
+    <Nombre>portatil hp</Nombre>
+    <Precio>350</Precio>
+    <Stock>6</Stock>
+  </Producto>
+  <Producto id_producto="6">
+    <Nombre>portatil asus</Nombre>
+    <Precio>355</Precio>
+    <Stock>5</Stock>
+  </Producto>
+  <Producto id_producto="7">
+    <Nombre>Teclado</Nombre>
+    <Precio>30</Precio>
+    <Stock>2</Stock>
+  </Producto>
+</Productos>

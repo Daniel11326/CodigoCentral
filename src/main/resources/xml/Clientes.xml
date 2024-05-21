@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Clientes>
+  <Cliente id_cliente="5">
+    <Nombre>Begoña</Nombre>
+    <DNI>12345687G</DNI>
+  </Cliente>
+  <Cliente id_cliente="6">
+    <Nombre>Diego</Nombre>
+    <DNI>87654321W</DNI>
+  </Cliente>
+  <Cliente id_cliente="7">
+    <Nombre>Juan</Nombre>
+    <DNI>87654321F</DNI>
+  </Cliente>
+</Clientes>
